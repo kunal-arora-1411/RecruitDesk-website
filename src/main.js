@@ -392,10 +392,151 @@ function initTypingAnimation() {
 initTypingAnimation();
 
 // ==========================================
-// Button Ripple Effect
+// Coming Soon Modal
+// ==========================================
+function createComingSoonModal() {
+  // Create modal overlay
+  const modal = document.createElement('div');
+  modal.id = 'coming-soon-modal';
+  modal.innerHTML = `
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-icon">🚀</div>
+        <h3>Coming Soon!</h3>
+        <p>We're working hard to bring you an amazing experience. Stay tuned!</p>
+        <button class="modal-close-btn">Got it!</button>
+      </div>
+    </div>
+  `;
+
+  // Add styles
+  const style = document.createElement('style');
+  style.textContent = `
+    #coming-soon-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10000;
+    }
+
+    #coming-soon-modal.active {
+      display: flex;
+    }
+
+    #coming-soon-modal .modal-overlay {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #coming-soon-modal .modal-content {
+      background: linear-gradient(135deg, rgba(30, 30, 45, 0.95), rgba(20, 20, 35, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 50px 60px;
+      text-align: center;
+      max-width: 400px;
+      animation: scaleIn 0.3s ease;
+      box-shadow: 0 25px 80px rgba(102, 126, 234, 0.3);
+    }
+
+    #coming-soon-modal .modal-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: bounce 1s infinite;
+    }
+
+    #coming-soon-modal h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 15px;
+    }
+
+    #coming-soon-modal p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    #coming-soon-modal .modal-close-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #coming-soon-modal .modal-close-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  `;
+
+  document.head.appendChild(style);
+  document.body.appendChild(modal);
+
+  // Close modal on button click
+  modal.querySelector('.modal-close-btn').addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
+  // Close modal on overlay click
+  modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
+    if (e.target === modal.querySelector('.modal-overlay')) {
+      modal.classList.remove('active');
+    }
+  });
+
+  return modal;
+}
+
+// Initialize modal
+const comingSoonModal = createComingSoonModal();
+
+function showComingSoon() {
+  comingSoonModal.classList.add('active');
+}
+
+// ==========================================
+// Button Ripple Effect + Coming Soon
 // ==========================================
 document.querySelectorAll('.primary-btn, .secondary-btn, .cta-btn').forEach(button => {
   button.addEventListener('click', function (e) {
+    e.preventDefault();
+
     const rect = this.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -435,6 +576,9 @@ document.querySelectorAll('.primary-btn, .secondary-btn, .cta-btn').forEach(butt
     document.head.appendChild(style);
 
     setTimeout(() => ripple.remove(), 600);
+
+    // Show coming soon modal
+    setTimeout(() => showComingSoon(), 300);
   });
 });
 
