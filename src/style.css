@@ -1400,12 +1400,19 @@ body {
   background: var(--bg-dark);
 }
 
+.schedule-section .visual-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .calendar-widget {
   background: var(--bg-dark-2);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   padding: 30px;
   max-width: 380px;
+  margin: 0 auto;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
 }
 
